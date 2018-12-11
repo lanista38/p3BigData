@@ -12,9 +12,11 @@ from keras.preprocessing import text, sequence
 from keras import utils
 from keras import optimizers
 
+#tranning, testing data
 data = pd.read_csv("/usr/local/p3/cleantextlabels7.csv")
 testData = pd.read_csv("/usr/local/p3/QueriedTweets.csv", dtype=object, error_bad_lines=False)
 
+# preprocessing of data
 trainingSize = int(len(data) * .8)
 print ("Train size: %d" % trainingSize)
 print ("Test size: %d" % (len(data) - trainingSize))
@@ -53,6 +55,7 @@ print('yTest shape:', yTest.shape)
 batch_size = 32
 epochs = 4
 
+#modeling
 model = Sequential()
 model.add(Dense(256, input_shape=(maxWords,)))
 model.add(Activation('relu'))
@@ -90,7 +93,8 @@ for i in range(projectPostsSize):
     row = (str(post), str(predicted_label))
     postsArr.append(row)
 
+#output
 df = pd.DataFrame(np.array(postsArr))
 df.columns = ['Post', 'PredictedLabel']
-
+df.groupBy("PredictedLabel").count()
 df.to_csv("categoriesModel1.csv")
